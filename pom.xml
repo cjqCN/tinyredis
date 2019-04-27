@@ -18,6 +18,7 @@
 
     <modules>
         <module>tinyredis-core</module>
+        <module>tinyredis-remote</module>
     </modules>
 
     <developers>
