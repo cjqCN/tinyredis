@@ -20,6 +20,8 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.redis.RedisArrayAggregator;
+import io.netty.handler.codec.redis.RedisBulkStringAggregator;
 import io.netty.handler.codec.redis.RedisDecoder;
 import io.netty.handler.codec.redis.RedisEncoder;
 import io.netty.handler.logging.LogLevel;
@@ -31,7 +33,7 @@ import io.netty.handler.ssl.util.SelfSignedCertificate;
 /**
  * Echoes back any received data from a client.
  */
-public final class ReidsServer {
+public final class RedisServer {
 
     static final boolean SSL = System.getProperty("ssl") != null;
     static final int PORT = Integer.parseInt(System.getProperty("port", "6379"));
@@ -63,6 +65,10 @@ public final class ReidsServer {
                          p.addLast(sslCtx.newHandler(ch.alloc()));
                      }
                      //p.addLast(new LoggingHandler(LogLevel.INFO));
+                     p.addLast(new RedisEncoder());
+                     p.addLast(new RedisDecoder());
+                     p.addLast(new RedisBulkStringAggregator());
+                     p.addLast(new RedisArrayAggregator());
                      p.addLast(new RedisServerHandler());
                  }
              });

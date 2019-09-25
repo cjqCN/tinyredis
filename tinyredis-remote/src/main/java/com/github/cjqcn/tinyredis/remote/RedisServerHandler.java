@@ -15,20 +15,12 @@
  */
 package com.github.cjqcn.tinyredis.remote;
 
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.handler.codec.redis.InlineCommandRedisMessage;
-import io.netty.handler.codec.redis.RedisMessage;
-import io.netty.util.CharsetUtil;
+import io.netty.handler.codec.redis.SimpleStringRedisMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Handler implementation for the echo server.
@@ -40,13 +32,11 @@ public class RedisServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        ByteBuf buf = (ByteBuf) msg;
-        String res = buf.toString(CharsetUtil.UTF_8);
-        LOG.debug("{}", res);
-        RedisMessage rep = new InlineCommandRedisMessage("PONG");
 
+        LOG.debug("{}", msg);
 
-        ctx.write(buf);
+        SimpleStringRedisMessage simpleStringRedisMessage = new SimpleStringRedisMessage("pong");
+        ctx.write(simpleStringRedisMessage);
     }
 
     @Override
