@@ -1,0 +1,21 @@
+package com.github.cjqcn.tinyredis.remote.client;
+
+import com.github.cjqcn.tinyredis.core.client.RedisClient;
+import com.github.cjqcn.tinyredis.core.client.impl.RedisClientImpl;
+import io.netty.channel.ChannelHandlerContext;
+
+import java.util.concurrent.atomic.AtomicLong;
+
+public class RedisClientFactory {
+    private final AtomicLong counter = new AtomicLong(0);
+
+    public RedisClient createRedisClient(ChannelHandlerContext ctx) {
+        return new RedisClientImpl(newName(), new RemoteRedisResponseStream(ctx));
+    }
+
+    private String newName() {
+        return "client-" + counter.getAndIncrement();
+    }
+
+
+}

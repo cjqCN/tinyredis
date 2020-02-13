@@ -1,4 +1,6 @@
 package com.github.cjqcn.tinyredis.core.struct;
 
-public class Sds {
+public enum ObjectType {
+    string,
+    ttl
 }

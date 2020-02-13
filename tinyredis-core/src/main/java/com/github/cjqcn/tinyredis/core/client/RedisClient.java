@@ -2,69 +2,36 @@ package com.github.cjqcn.tinyredis.core.client;
 
 import com.github.cjqcn.tinyredis.core.command.RedisCommand;
 import com.github.cjqcn.tinyredis.core.db.RedisDb;
-import com.github.cjqcn.tinyredis.core.struct.RedisObject;
-import com.github.cjqcn.tinyredis.core.struct.Sds;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import com.github.cjqcn.tinyredis.core.server.RedisServer;
 
-/**
- * redis 客户端信息
- */
-@Setter
-@Getter
-@ToString
-public class RedisClient {
+public interface RedisClient {
+    String name();
 
-    /**
-     * 套接字 fd
-     */
-    private int fd;
+    int flag();
 
-    /**
-     * 正在使用的 redisDb
-     */
-    private RedisDb db;
+    void init();
 
-    /**
-     * 词典id
-     */
-    private int dictid;
+    void destroy();
 
-    /**
-     * 客户端name
-     */
-    private RedisObject name;
+    RedisServer server();
 
-    /**
-     * 查询缓存区
-     */
-    private Sds querybuf;
+    void executeCommand(RedisCommand redisCommand);
 
-    /**
-     * 最近 100ms+ 查询缓存区的峰值
-     */
-    private long querybufPeak;
+    RedisResponseStream stream();
 
-    /**
-     * 参数数量
-     */
-    private int argc;
+    RedisDb curDb();
 
-    /**
-     * 参数数组
-     */
-    private RedisObject[] argv;
+    DataAccess dataAccess();
 
-    /**
-     * 执行的指令
-     */
-    private RedisCommand cmd, lastcmd;
+    interface DataAccess {
+        void setCurDb(RedisDb redisDb);
 
-    /**
-     * 请求的类型
-     */
-    private int reqtype;
+        void setServer(RedisServer server);
 
+        void setName(String name);
+
+        void setRedisResponseStream(RedisResponseStream stream);
+
+    }
 
 }

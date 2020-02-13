@@ -1,4 +1,7 @@
 package com.github.cjqcn.tinyredis.core.struct;
 
-public class RedisObject {
+public interface RedisObject {
+    ObjectType type();
+
+
 }
