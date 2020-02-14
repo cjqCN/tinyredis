@@ -8,7 +8,6 @@ import com.github.cjqcn.tinyredis.core.command.impl.SetCommand;
 import com.github.cjqcn.tinyredis.core.exception.RedisException;
 import com.github.cjqcn.tinyredis.core.struct.impl.StringRedisObject;
 import com.github.cjqcn.tinyredis.core.struct.impl.TtlRedisObject;
-import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.CodecException;
@@ -17,15 +16,14 @@ import io.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Sharable
 public class RedisClientHandler extends SimpleChannelInboundHandler<ArrayRedisMessage> {
 
     private static final Logger LOG = LoggerFactory.getLogger(RedisClientHandler.class);
 
     private final RedisClient redisClient;
 
-    public RedisClientHandler() {
-        this.redisClient = null;
+    public RedisClientHandler(RedisClient redisClient) {
+        this.redisClient = redisClient;
     }
 
     @Override

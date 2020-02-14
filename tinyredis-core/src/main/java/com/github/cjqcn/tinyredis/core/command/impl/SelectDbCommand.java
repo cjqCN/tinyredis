@@ -17,6 +17,6 @@ public class SelectDbCommand extends AbstractCommand implements RedisCommand {
 
     @Override
     public CommandType type() {
-        return null;
+        return CommandType.select;
     }
 }

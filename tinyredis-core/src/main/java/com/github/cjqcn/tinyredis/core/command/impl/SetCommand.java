@@ -25,6 +25,6 @@ public class SetCommand extends AbstractCommand implements RedisCommand {
 
     @Override
     public CommandType type() {
-        return null;
+        return CommandType.set;
     }
 }

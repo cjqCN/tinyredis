@@ -2,6 +2,7 @@ package com.github.cjqcn.tinyredis.remote;
 
 import com.github.cjqcn.tinyredis.core.server.RedisServer;
 import com.github.cjqcn.tinyredis.core.server.impl.RedisServerImpl;
+import com.github.cjqcn.tinyredis.remote.client.RedisClientFactory;
 import com.github.cjqcn.tinyredis.remote.client.RedisClientHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -27,6 +28,7 @@ public final class RemoteServer {
     public static void main(String[] args) throws Exception {
 
         final RedisServer server = new RedisServerImpl();
+        final RedisClientFactory redisClientFactory = new RedisClientFactory();
         server.init();
 
         // Configure SSL.
