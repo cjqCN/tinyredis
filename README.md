@@ -14,8 +14,11 @@
 - get
 - set
 - setnx
+- setex
+- psetex
 - expire
 - ttl
+- pttl
 
 
 ## 使用

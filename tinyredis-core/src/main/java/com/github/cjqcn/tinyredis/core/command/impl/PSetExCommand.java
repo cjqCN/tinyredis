@@ -7,42 +7,37 @@ import com.github.cjqcn.tinyredis.core.exception.RedisException;
 import com.github.cjqcn.tinyredis.core.struct.impl.StringRedisObject;
 import com.github.cjqcn.tinyredis.core.util.TimeUtil;
 
-public class SetCommand extends AbstractCommand implements RedisCommand {
+public class PSetExCommand extends AbstractCommand implements RedisCommand {
 
     private String key;
     private String value;
-    private Long expireSec;
+    private long expireMills;
 
-    public SetCommand(RedisClient redisClient, String key, String value, Long expireSec) {
+    public PSetExCommand(RedisClient redisClient, String key, String value, long expireMills) {
         super(redisClient);
         this.key = key;
         this.value = value;
-        this.expireSec = expireSec;
+        this.expireMills = expireMills;
     }
 
     @Override
     public void execute() {
-        if (expireSec != null && expireSec <= 0) {
+        if (expireMills <= 0) {
             throw RedisException.INVALID_EXPIRE_TIME_IN_SETEX;
         }
         RedisDb db = redisClient.curDb();
         db.dict().set(key, StringRedisObject.valueOf(value));
-        if (expireSec != null) {
-            db.expires().set(key, TimeUtil.nextSecTimeMillis(expireSec));
-        }
+        db.expires().set(key, TimeUtil.nextMillisTimeMillis(expireMills));
         redisClient.stream().response(SimpleStringResponse.OK);
     }
 
     @Override
     public String decode() {
-        if (expireSec != null) {
-            return String.format("set %s %s %d", key, value, expireSec);
-        }
-        return String.format("set %s %s", key, value);
+        return String.format("psetex %s %d %s", key, expireMills, value);
     }
 
 
-    public static SetCommand build(RedisClient redisClient, String key, String value, Long expireSec) {
-        return new SetCommand(redisClient, key, value, expireSec);
+    public static PSetExCommand build(RedisClient redisClient, String key, String value, long expireMills) {
+        return new PSetExCommand(redisClient, key, value, expireMills);
     }
 }

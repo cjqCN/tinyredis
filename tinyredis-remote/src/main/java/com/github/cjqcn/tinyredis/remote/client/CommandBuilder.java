@@ -33,14 +33,20 @@ public class CommandBuilder {
                     return GetCommand.build(redisClient, decodeMessageToString(messages[1]));
                 case CommandType.SET:
                     return tryBuildSetCommand(redisClient, messages);
-                case CommandType.SET_NX:
+                case CommandType.SETNX:
                     return SetNxCommand.build(redisClient, decodeMessageToString(messages[1]), decodeMessageToString(messages[2]));
+                case CommandType.SETEX:
+                    return SetExCommand.build(redisClient, decodeMessageToString(messages[1]), decodeMessageToString(messages[3]), Long.parseLong(decodeMessageToString(messages[2])));
+                case CommandType.PSETEX:
+                    return PSetExCommand.build(redisClient, decodeMessageToString(messages[1]), decodeMessageToString(messages[3]), Long.parseLong(decodeMessageToString(messages[2])));
                 case CommandType.DEL:
                     return tryBuildDelCommand(redisClient, messages);
                 case CommandType.EXPIRE:
                     return ExpireCommand.build(redisClient, decodeMessageToString(messages[1]), Long.parseLong(decodeMessageToString(messages[2])));
                 case CommandType.TTL:
                     return TTLCommand.build(redisClient, decodeMessageToString(messages[1]));
+                case CommandType.PTTL:
+                    return PTTLCommand.build(redisClient, decodeMessageToString(messages[1]));
                 default:
                     return null;
             }
@@ -53,7 +59,7 @@ public class CommandBuilder {
 
     private static SetCommand tryBuildSetCommand(RedisClient redisClient, FullBulkStringRedisMessage[] messages) {
         if (messages.length == 3) {
-            return SetCommand.build(redisClient, decodeMessageToString(messages[1]), decodeMessageToString(messages[2]), -1);
+            return SetCommand.build(redisClient, decodeMessageToString(messages[1]), decodeMessageToString(messages[2]), null);
         }
         if (messages.length == 5 && "ex".equalsIgnoreCase(decodeMessageToString(messages[3]))) {
             return SetCommand.build(redisClient, decodeMessageToString(messages[1]), decodeMessageToString(messages[2]), Long.parseLong(decodeMessageToString(messages[4])));

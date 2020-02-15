@@ -16,6 +16,12 @@ public final class TimeUtil {
 
 
     public static long nextSecTimeMillis(long sec) {
-        return currentTimeMillis() + sec * 1000;
+        return nextMillisTimeMillis(sec * 1000);
     }
+
+    public static long nextMillisTimeMillis(long millis) {
+        return currentTimeMillis() + millis;
+    }
+
 }
+

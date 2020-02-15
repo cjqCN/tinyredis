@@ -10,9 +10,11 @@ public class CommandType {
     public static final String DEL = "del";
 
     public static final String SET = "set";
-    public static final String SET_EX = "setex";
-    public static final String SET_NX = "setnx";
+    public static final String SETNX = "setnx";
+    public static final String SETEX = "setex";
+    public static final String PSETEX = "psetex";
 
     public static final String TTL = "ttl";
+    public static final String PTTL = "pttl";
     public static final String EXPIRE = "expire";
 }

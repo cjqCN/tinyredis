@@ -10,6 +10,8 @@ public class RedisException extends RuntimeException {
 
     public static final RedisException AUTH_ERROR = new RedisException("auth error.");
 
+    public static final RedisException INVALID_EXPIRE_TIME_IN_SETEX = new RedisException("invalid expire time in SETEX");
+
 
     public RedisException(String errorMsg) {
         super(errorMsg);
