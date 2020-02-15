@@ -20,9 +20,10 @@ public class RedisServerImpl implements RedisServer {
     private final RedisDb[] dbs = new RedisDb[16];
     private final ListenerManager listenerManager = new ListenerManagerImpl();
 
-    public  RedisServerImpl() {
+    public RedisServerImpl() {
         listenerManager.addListener(new CommandListener());
     }
+
     @Override
     public void registerClient(RedisClient redisClient) {
         clients.put(redisClient.name(), redisClient);
@@ -59,7 +60,9 @@ public class RedisServerImpl implements RedisServer {
 
     @Override
     public RedisDb[] dbs() {
-        return dbs;
+        RedisDb[] res = new RedisDb[dbs.length];
+        System.arraycopy(dbs, 0, res, 0, dbs.length);
+        return res;
     }
 
     @Override

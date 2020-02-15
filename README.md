@@ -10,9 +10,12 @@
 - auth 
 - monitor
 - select 
+- del
 - get
 - set
-
+- setnx
+- expire
+- ttl
 
 
 ## 使用
@@ -26,11 +29,11 @@
 ### 访问
 
 ```cmd
-127.0.0.1:6379> set key value 100
+127.0.0.1:6379> set key value
 (error) NOAUTH Authentication required.
 127.0.0.1:6379> auth password
 OK
-127.0.0.1:6379> set key value 100
+127.0.0.1:6379> set key value
 OK
 127.0.0.1:6379> get key
 value

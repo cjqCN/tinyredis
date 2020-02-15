@@ -3,16 +3,14 @@ package com.github.cjqcn.tinyredis.core.command.impl;
 import com.github.cjqcn.tinyredis.core.client.RedisClient;
 import com.github.cjqcn.tinyredis.core.command.RedisCommand;
 import com.github.cjqcn.tinyredis.core.db.RedisDb;
-import com.github.cjqcn.tinyredis.core.exception.RedisException;
 import com.github.cjqcn.tinyredis.core.struct.RedisObject;
-import com.github.cjqcn.tinyredis.core.struct.impl.StringRedisObject;
 import com.github.cjqcn.tinyredis.core.util.DBUtil;
+import com.github.cjqcn.tinyredis.core.util.TimeUtil;
 
-public class GetCommand extends AbstractCommand implements RedisCommand {
-
+public class TTLCommand extends AbstractCommand implements RedisCommand {
     private final String key;
 
-    public GetCommand(RedisClient redisClient, String key) {
+    public TTLCommand(RedisClient redisClient, String key) {
         super(redisClient);
         this.key = key;
     }
@@ -24,30 +22,27 @@ public class GetCommand extends AbstractCommand implements RedisCommand {
 
     @Override
     public String decode() {
-        return "get " + key;
+        return "ttl " + key;
     }
 
     public void execute0(RedisClient redisClient, String key) {
         RedisDb db = redisClient.curDb();
         RedisObject value = DBUtil.lookupKeyRead(db, key);
         if (value == null) {
-            redisClient.stream().response(SimpleStringResponse.GET_NULL);
+            redisClient.stream().responseString("-2");
             return;
         }
-        if (value instanceof StringRedisObject) {
-            redisClient.stream().responseString(value.get().toString());
+        Long expireTimestamp = db.expires().get(key);
+        if (expireTimestamp == null) {
+            redisClient.stream().responseString("-1");
         } else {
-            throw RedisException.WRONG_TYPE_OPERATION;
+            redisClient.stream().responseString(String.valueOf((expireTimestamp - TimeUtil.currentTimeMillis()) / 1000L));
         }
     }
 
-    public static GetCommand build(RedisClient redisClient, String value) {
-        // TODO cache
-        return new GetCommand(redisClient, value);
+    public static TTLCommand build(RedisClient redisClient, String value) {
+        return new TTLCommand(redisClient, value);
     }
 
-    @Override
-    public String toString() {
-        return "GetCommand{" + key + '}';
-    }
+
 }

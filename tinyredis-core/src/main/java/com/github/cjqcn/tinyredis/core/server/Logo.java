@@ -4,7 +4,7 @@ public interface Logo {
 
 
     String ascii_logo =
-                    "                 _._                                                  \n" +
+            "                 _._                                                  \n" +
                     "           _.-'' __ ''-._                                             \n" +
                     "      _.-''    '.  '_.  ''-._             Redis %s (%s/%d) %s bit\n" +
                     "  .-'' .-'''.  '''\\/  _.,_ ''-._                                 \n" +
@@ -21,7 +21,6 @@ public interface Logo {
                     "      '-._    '-.__.-'    _.-'                                       \n" +
                     "          '-._         _.-'                                           \n" +
                     "               '-.__.-'                                               \n\n";
-
 
 
 }

@@ -20,12 +20,17 @@ public class BaseDict<K, V> implements Dict<K, V> {
     }
 
     @Override
+    public V setnx(K key, V value) {
+        return store.putIfAbsent(key, value);
+    }
+
+    @Override
     public boolean exist(K key) {
         return store.containsKey(key);
     }
 
     @Override
-    public void remove(K key) {
-        store.remove(key);
+    public V remove(K key) {
+        return store.remove(key);
     }
 }

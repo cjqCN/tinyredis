@@ -14,4 +14,8 @@ public final class TimeUtil {
         return System.currentTimeMillis();
     }
 
+
+    public static long nextSecTimeMillis(long sec) {
+        return currentTimeMillis() + sec * 1000;
+    }
 }
