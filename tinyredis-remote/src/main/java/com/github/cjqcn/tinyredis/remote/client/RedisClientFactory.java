@@ -7,13 +7,13 @@ import io.netty.channel.ChannelHandlerContext;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class RedisClientFactory {
-    private final AtomicLong counter = new AtomicLong(0);
+    private static final AtomicLong counter = new AtomicLong(0);
 
-    public RedisClient createRedisClient(ChannelHandlerContext ctx) {
+    public static RedisClient createRedisClient(ChannelHandlerContext ctx) {
         return new RedisClientImpl(newName(), new RemoteRedisResponseStream(ctx));
     }
 
-    private String newName() {
+    private static String newName() {
         return "client-" + counter.getAndIncrement();
     }
 

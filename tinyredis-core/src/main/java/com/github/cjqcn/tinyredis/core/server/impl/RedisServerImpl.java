@@ -55,5 +55,10 @@ public class RedisServerImpl implements RedisServer {
         return dbs;
     }
 
+    @Override
+    public boolean auth(String password) {
+        return "password".equalsIgnoreCase(password);
+    }
+
 
 }

@@ -5,7 +5,7 @@ import com.github.cjqcn.tinyredis.core.struct.RedisObject;
 
 import java.util.Objects;
 
-public class StringRedisObject implements RedisObject {
+public class StringRedisObject implements RedisObject<String> {
 
     public static final StringRedisObject valueOf(String content) {
         return new StringRedisObject(content);
@@ -27,6 +27,11 @@ public class StringRedisObject implements RedisObject {
     }
 
     @Override
+    public String get() {
+        return content;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -42,4 +47,5 @@ public class StringRedisObject implements RedisObject {
     public int hashCode() {
         return Objects.hash(content);
     }
+
 }

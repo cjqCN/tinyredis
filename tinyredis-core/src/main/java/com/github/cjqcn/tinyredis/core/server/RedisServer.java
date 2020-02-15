@@ -15,4 +15,6 @@ public interface RedisServer {
     void destroy();
 
     RedisDb[] dbs();
+
+    boolean auth(String password);
 }

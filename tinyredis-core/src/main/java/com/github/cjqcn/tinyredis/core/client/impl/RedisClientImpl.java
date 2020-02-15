@@ -4,11 +4,16 @@ import com.github.cjqcn.tinyredis.core.client.RedisClient;
 import com.github.cjqcn.tinyredis.core.client.RedisResponseStream;
 import com.github.cjqcn.tinyredis.core.command.RedisCommand;
 import com.github.cjqcn.tinyredis.core.command.RedisResponse;
+import com.github.cjqcn.tinyredis.core.command.impl.AuthCommand;
 import com.github.cjqcn.tinyredis.core.db.RedisDb;
+import com.github.cjqcn.tinyredis.core.exception.RedisException;
 import com.github.cjqcn.tinyredis.core.server.RedisServer;
-import sun.reflect.Reflection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RedisClientImpl implements RedisClient {
+    private static final Logger logger = LoggerFactory.getLogger(RedisClient.class);
+
     protected RedisServer server;
     protected String name;
     protected RedisDb curDb;
@@ -35,10 +40,10 @@ public class RedisClientImpl implements RedisClient {
 
     @Override
     public DataAccess dataAccess() {
-        Class callerClass = Reflection.getCallerClass();
-        if (!callerClass.isAssignableFrom(RedisServer.class)) {
-            throw new UnsupportedOperationException();
-        }
+//        Class callerClass = Reflection.getCallerClass();
+//        if (!callerClass.isAssignableFrom(RedisServer.class) || callerClass.isAssignableFrom(RedisCommand.class)) {
+//            throw new UnsupportedOperationException();
+//        }
         final RedisClientImpl redisClient = this;
         return new DataAccess() {
             @Override
@@ -60,7 +65,17 @@ public class RedisClientImpl implements RedisClient {
             public void setRedisResponseStream(RedisResponseStream stream) {
                 redisClient.stream = stream;
             }
+
+            @Override
+            public void setAuth(boolean auth) {
+                redisClient.auth = auth;
+            }
         };
+    }
+
+    @Override
+    public RedisCommand getCache(String command) {
+        return null;
     }
 
     @Override
@@ -92,11 +107,11 @@ public class RedisClientImpl implements RedisClient {
 
     @Override
     public void executeCommand(RedisCommand redisCommand) {
-        if (!auth) {
-            error("(error) NOAUTH Authentication required.");
-            return;
+        logger.debug("[{}] executeCommand {}", this, redisCommand);
+        if (!(redisCommand instanceof AuthCommand) && !auth) {
+            throw RedisException.NO_AUTH;
         }
-        redisCommand.execute(this);
+        redisCommand.execute();
     }
 
     @Override
@@ -116,4 +131,8 @@ public class RedisClientImpl implements RedisClient {
         stream().error(error);
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
 }

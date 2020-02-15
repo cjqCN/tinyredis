@@ -21,10 +21,12 @@ public class RemoteRedisResponseStream implements RedisResponseStream {
     @Override
     public void responseString(String str) {
         ctx.write(new SimpleStringRedisMessage(str));
+        ctx.flush();
     }
 
     @Override
     public void error(String error) {
         ctx.write(new ErrorRedisMessage(error));
+        ctx.flush();
     }
 }

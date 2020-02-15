@@ -1,9 +1,11 @@
 package com.github.cjqcn.tinyredis.core.db;
 
+import com.github.cjqcn.tinyredis.core.struct.RedisObject;
+
 public interface RedisDb {
     int id();
 
-    Dict dict();
+    Dict<String, RedisObject> dict();
 
-    Dict expires();
+    Dict<String, Long> expires();
 }
