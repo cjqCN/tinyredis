@@ -12,22 +12,28 @@ import io.netty.handler.codec.redis.RedisArrayAggregator;
 import io.netty.handler.codec.redis.RedisBulkStringAggregator;
 import io.netty.handler.codec.redis.RedisDecoder;
 import io.netty.handler.codec.redis.RedisEncoder;
-import io.netty.handler.logging.LogLevel;
-import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.SelfSignedCertificate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.InetSocketAddress;
 
 
 public final class RemoteServer {
 
     private static final boolean SSL = System.getProperty("ssl") != null;
+    private static final String HOST = System.getProperty("host", "localhost");
     private static final int PORT = Integer.parseInt(System.getProperty("port", "6379"));
+    private static final Logger logger = LoggerFactory.getLogger(RemoteServer.class);
 
     public static void main(String[] args) throws Exception {
-
+        long start = System.currentTimeMillis();
         final RedisServer server = new RedisServerImpl();
         server.init();
+
+        InetSocketAddress bindAddress = new InetSocketAddress(HOST, PORT);
 
         // Configure SSL.
         final SslContext sslCtx;
@@ -46,7 +52,7 @@ public final class RemoteServer {
             b.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
                     .option(ChannelOption.SO_BACKLOG, 100)
-                    .handler(new LoggingHandler(LogLevel.INFO))
+//                    .handler(new LoggingHandler(LogLevel.DEBUG))
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {
@@ -54,7 +60,6 @@ public final class RemoteServer {
                             if (sslCtx != null) {
                                 p.addLast(sslCtx.newHandler(ch.alloc()));
                             }
-                            p.addLast(new LoggingHandler(LogLevel.DEBUG));
                             p.addLast(new RedisEncoder());
                             p.addLast(new RedisDecoder());
                             p.addLast(new RedisBulkStringAggregator());
@@ -64,8 +69,9 @@ public final class RemoteServer {
                     });
 
             // Start the server.
-            ChannelFuture f = b.bind(PORT).sync();
-
+            ChannelFuture f = b.bind(bindAddress).sync();
+            long end = System.currentTimeMillis();
+            logger.info("Started redis at address {}, cost {}ms", bindAddress, end - start);
             // Wait until the server socket is closed.
             f.channel().closeFuture().sync();
         } finally {

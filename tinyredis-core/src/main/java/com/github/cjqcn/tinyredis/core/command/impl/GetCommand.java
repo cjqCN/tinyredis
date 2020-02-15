@@ -22,6 +22,11 @@ public class GetCommand extends AbstractCommand implements RedisCommand {
         execute0(redisClient, key);
     }
 
+    @Override
+    public String decode() {
+        return "get " + key;
+    }
+
     public void execute0(RedisClient redisClient, String key) {
         RedisDb db = redisClient.curDb();
         RedisObject value = DBUtil.getValueWithExpire(db, key);

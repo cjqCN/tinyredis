@@ -7,9 +7,13 @@ import com.github.cjqcn.tinyredis.core.command.RedisResponse;
 import com.github.cjqcn.tinyredis.core.command.impl.AuthCommand;
 import com.github.cjqcn.tinyredis.core.db.RedisDb;
 import com.github.cjqcn.tinyredis.core.exception.RedisException;
+import com.github.cjqcn.tinyredis.core.listen.Listener;
 import com.github.cjqcn.tinyredis.core.server.RedisServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RedisClientImpl implements RedisClient {
     private static final Logger logger = LoggerFactory.getLogger(RedisClient.class);
@@ -19,6 +23,7 @@ public class RedisClientImpl implements RedisClient {
     protected RedisDb curDb;
     protected RedisResponseStream stream;
     protected boolean auth;
+    protected List<Listener> listeners = new ArrayList<>();
 
     public RedisClientImpl(final String name, RedisResponseStream stream) {
         this.name = name;
@@ -79,18 +84,25 @@ public class RedisClientImpl implements RedisClient {
     }
 
     @Override
+    public void addListener(Listener listener) {
+        listeners.add(listener);
+        server().listenerManager().addListener(listener);
+    }
+
+    @Override
     public int flag() {
         return 0;
     }
 
     @Override
     public void init() {
-
     }
 
     @Override
     public void destroy() {
-
+        for (Listener listener : listeners) {
+            server().listenerManager().remove(listener);
+        }
     }
 
     @Override
@@ -107,8 +119,9 @@ public class RedisClientImpl implements RedisClient {
 
     @Override
     public void executeCommand(RedisCommand redisCommand) {
-        logger.debug("[{}] executeCommand {}", this, redisCommand);
+        server().listenerManager().accept(redisCommand);
         if (!(redisCommand instanceof AuthCommand) && !auth) {
+            logger.info("{} NOAUTH Authentication required", this);
             throw RedisException.NO_AUTH;
         }
         redisCommand.execute();
@@ -133,6 +146,6 @@ public class RedisClientImpl implements RedisClient {
 
     @Override
     public String toString() {
-        return name;
+        return "redisClient " + name;
     }
 }

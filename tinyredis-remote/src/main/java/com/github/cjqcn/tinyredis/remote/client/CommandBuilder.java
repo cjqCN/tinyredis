@@ -3,10 +3,7 @@ package com.github.cjqcn.tinyredis.remote.client;
 import com.github.cjqcn.tinyredis.core.client.RedisClient;
 import com.github.cjqcn.tinyredis.core.command.CommandType;
 import com.github.cjqcn.tinyredis.core.command.RedisCommand;
-import com.github.cjqcn.tinyredis.core.command.impl.AuthCommand;
-import com.github.cjqcn.tinyredis.core.command.impl.GetCommand;
-import com.github.cjqcn.tinyredis.core.command.impl.SelectDbCommand;
-import com.github.cjqcn.tinyredis.core.command.impl.SetCommand;
+import com.github.cjqcn.tinyredis.core.command.impl.*;
 import com.github.cjqcn.tinyredis.core.struct.impl.StringRedisObject;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.CodecException;
@@ -29,6 +26,8 @@ public class CommandBuilder {
                 return AuthCommand.build(redisClient, decodeMessageToString(messages[1]));
             case CommandType.SELECT:
                 return SelectDbCommand.build(redisClient, Integer.parseInt(decodeMessageToString(messages[1])));
+            case CommandType.MONITOR:
+                return MonitorCommand.build(redisClient);
             case CommandType.GET:
                 return GetCommand.build(redisClient, decodeMessageToString(messages[1]));
             case CommandType.SET:

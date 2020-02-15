@@ -4,6 +4,9 @@ package com.github.cjqcn.tinyredis.core.server.impl;
 import com.github.cjqcn.tinyredis.core.client.RedisClient;
 import com.github.cjqcn.tinyredis.core.db.RedisDb;
 import com.github.cjqcn.tinyredis.core.db.impl.RedisDbImpl;
+import com.github.cjqcn.tinyredis.core.listen.ListenerManager;
+import com.github.cjqcn.tinyredis.core.listen.impl.CommandListener;
+import com.github.cjqcn.tinyredis.core.listen.impl.ListenerManagerImpl;
 import com.github.cjqcn.tinyredis.core.server.Logo;
 import com.github.cjqcn.tinyredis.core.server.RedisInfo;
 import com.github.cjqcn.tinyredis.core.server.RedisServer;
@@ -15,7 +18,11 @@ public class RedisServerImpl implements RedisServer {
 
     private Map<String, RedisClient> clients = new ConcurrentHashMap<>();
     private final RedisDb[] dbs = new RedisDb[16];
+    private final ListenerManager listenerManager = new ListenerManagerImpl();
 
+    public  RedisServerImpl() {
+        listenerManager.addListener(new CommandListener());
+    }
     @Override
     public void registerClient(RedisClient redisClient) {
         clients.put(redisClient.name(), redisClient);
@@ -58,6 +65,11 @@ public class RedisServerImpl implements RedisServer {
     @Override
     public boolean auth(String password) {
         return "password".equalsIgnoreCase(password);
+    }
+
+    @Override
+    public ListenerManager listenerManager() {
+        return listenerManager;
     }
 
 

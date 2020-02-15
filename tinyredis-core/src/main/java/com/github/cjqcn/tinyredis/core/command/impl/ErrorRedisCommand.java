@@ -13,4 +13,9 @@ public class ErrorRedisCommand extends AbstractCommand implements RedisCommand {
     public void execute() {
         redisClient.stream().error("ErrorRedisCommand");
     }
+
+    @Override
+    public String decode() {
+        return "error";
+    }
 }

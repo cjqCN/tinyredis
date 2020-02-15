@@ -23,6 +23,11 @@ public class AuthCommand extends AbstractCommand implements RedisCommand {
         }
     }
 
+    @Override
+    public String decode() {
+        return "auth " + password;
+    }
+
     public static AuthCommand build(RedisClient redisClient, String password) {
         return new AuthCommand(redisClient, password);
     }

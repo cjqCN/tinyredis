@@ -6,5 +6,5 @@ public class CommandType {
     public static final String SET = "set";
     public static final String SELECT = "select";
     public static final String ERROR = "error";
-
+    public static final String MONITOR = "monitor";
 }

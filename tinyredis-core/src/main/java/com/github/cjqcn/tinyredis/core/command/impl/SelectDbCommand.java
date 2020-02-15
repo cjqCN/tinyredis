@@ -20,6 +20,11 @@ public class SelectDbCommand extends AbstractCommand implements RedisCommand {
         redisClient.stream().response(SimpleStringResponse.OK);
     }
 
+    @Override
+    public String decode() {
+        return "select " + dbIndex;
+    }
+
     public static SelectDbCommand build(RedisClient redisClient, int dbIndex) {
         return new SelectDbCommand(redisClient, dbIndex);
     }

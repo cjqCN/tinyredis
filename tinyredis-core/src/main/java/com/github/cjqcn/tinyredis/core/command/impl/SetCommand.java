@@ -10,27 +10,32 @@ public class SetCommand extends AbstractCommand implements RedisCommand {
 
     private String key;
     private String value;
-    private long ttl;
+    private long expire;
 
-    public SetCommand(RedisClient redisClient, String key, String value, long ttl) {
+    public SetCommand(RedisClient redisClient, String key, String value, long expire) {
         super(redisClient);
         this.key = key;
         this.value = value;
-        this.ttl = ttl;
+        this.expire = expire;
     }
 
     @Override
     public void execute() {
         RedisDb db = redisClient.curDb();
         db.dict().set(key, StringRedisObject.valueOf(value));
-        if (ttl > 0) {
-            db.expires().set(key, ttl);
+        if (expire > 0) {
+            db.expires().set(key, expire * 1000 + TimeUtil.currentTimeMillis());
         }
         redisClient.stream().response(SimpleStringResponse.OK);
     }
 
+    @Override
+    public String decode() {
+        return String.format("set %s %s %d", key, value, expire);
+    }
+
 
     public static SetCommand build(RedisClient redisClient, String key, String value, long expire) {
-        return new SetCommand(redisClient, key, value, expire * 1000 + TimeUtil.currentTimeMillis());
+        return new SetCommand(redisClient, key, value, expire);
     }
 }
