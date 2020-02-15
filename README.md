@@ -21,8 +21,10 @@
 启动日志：
 ```log
 [2020-02-15 21:01:49.584] - [INFO] - [com.github.cjqcn.tinyredis.remote.RemoteServer:74] - [Method = main] - [Started redis at address localhost/127.0.0.1:6379, cost 3112ms]```
+```
 
 ### 访问
+
 ```cmd
 127.0.0.1:6379> set key value 100
 (error) NOAUTH Authentication required.
