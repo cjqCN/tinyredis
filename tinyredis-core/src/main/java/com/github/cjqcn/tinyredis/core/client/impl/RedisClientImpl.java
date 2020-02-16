@@ -6,7 +6,7 @@ import com.github.cjqcn.tinyredis.core.command.RedisCommand;
 import com.github.cjqcn.tinyredis.core.command.RedisResponse;
 import com.github.cjqcn.tinyredis.core.command.impl.AuthCommand;
 import com.github.cjqcn.tinyredis.core.db.RedisDb;
-import com.github.cjqcn.tinyredis.core.exception.RedisException;
+import com.github.cjqcn.tinyredis.core.exception.ExceptionThrower;
 import com.github.cjqcn.tinyredis.core.listen.Listener;
 import com.github.cjqcn.tinyredis.core.server.RedisServer;
 import org.slf4j.Logger;
@@ -121,8 +121,7 @@ public class RedisClientImpl implements RedisClient {
     public void executeCommand(RedisCommand redisCommand) {
         server().listenerManager().accept(redisCommand);
         if (!(redisCommand instanceof AuthCommand) && !auth) {
-            logger.info("{} NOAUTH Authentication required", this);
-            throw RedisException.NO_AUTH;
+            ExceptionThrower.NO_AUTH.throwException();
         }
         redisCommand.execute();
     }

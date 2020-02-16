@@ -4,8 +4,8 @@ import com.github.cjqcn.tinyredis.core.client.RedisClient;
 import com.github.cjqcn.tinyredis.core.command.CommandType;
 import com.github.cjqcn.tinyredis.core.command.RedisCommand;
 import com.github.cjqcn.tinyredis.core.command.impl.*;
+import com.github.cjqcn.tinyredis.core.exception.ExceptionThrower;
 import com.github.cjqcn.tinyredis.core.exception.RedisException;
-import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.CodecException;
 import io.netty.handler.codec.redis.*;
 import io.netty.util.CharsetUtil;
@@ -20,8 +20,9 @@ public class CommandBuilder {
      * @return
      */
     public static final RedisCommand decode(RedisClient redisClient, FullBulkStringRedisMessage[] messages) {
+        String commandTag = "unknown";
         try {
-            String commandTag = decodeMessageToString(messages[0]).toLowerCase();
+            commandTag = decodeMessageToString(messages[0]).toLowerCase();
             switch (commandTag) {
                 case CommandType.AUTH:
                     return AuthCommand.build(redisClient, decodeMessageToString(messages[1]));
@@ -48,12 +49,15 @@ public class CommandBuilder {
                 case CommandType.PTTL:
                     return PTTLCommand.build(redisClient, decodeMessageToString(messages[1]));
                 default:
-                    return null;
+                    ExceptionThrower.UNKNOWN_COMMAND.throwException();
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
-            throw RedisException.ERROR_PARAM;
+            if (ex instanceof RedisException) {
+                throw ex;
+            }
+            ExceptionThrower.ERROR_PARAM.throwException(commandTag);
         }
+        return null;
     }
 
 
@@ -64,7 +68,8 @@ public class CommandBuilder {
         if (messages.length == 5 && "ex".equalsIgnoreCase(decodeMessageToString(messages[3]))) {
             return SetCommand.build(redisClient, decodeMessageToString(messages[1]), decodeMessageToString(messages[2]), Long.parseLong(decodeMessageToString(messages[4])));
         }
-        throw RedisException.ERROR_PARAM;
+        ExceptionThrower.ERROR_PARAM.throwException("set");
+        return null;
     }
 
     private static DelCommand tryBuildDelCommand(RedisClient redisClient, FullBulkStringRedisMessage[] messages) {
@@ -87,18 +92,7 @@ public class CommandBuilder {
             return ((FullBulkStringRedisMessage) msg).content().toString(CharsetUtil.UTF_8);
         }
         throw new CodecException("unknown message type: " + msg);
-
     }
 
-    private static String getString(FullBulkStringRedisMessage msg) {
-        if (msg.isNull()) {
-            return "(null)";
-        }
-        return msg.content().toString(CharsetUtil.UTF_8);
-    }
-
-    private void response(ChannelHandlerContext ctx, String msg) {
-        ctx.write(new SimpleStringRedisMessage(msg));
-    }
 
 }

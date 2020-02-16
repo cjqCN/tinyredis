@@ -6,7 +6,7 @@ public class SimpleStringResponse implements RedisResponse {
 
     public static final RedisResponse OK = new SimpleStringResponse("OK");
 
-    public static final RedisResponse GET_NULL = new SimpleStringResponse("NULL");
+    public static final RedisResponse NULL = new SimpleStringResponse("(nil)");
 
     protected final String content;
 

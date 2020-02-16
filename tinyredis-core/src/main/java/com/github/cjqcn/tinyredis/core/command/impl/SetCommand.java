@@ -3,7 +3,7 @@ package com.github.cjqcn.tinyredis.core.command.impl;
 import com.github.cjqcn.tinyredis.core.client.RedisClient;
 import com.github.cjqcn.tinyredis.core.command.RedisCommand;
 import com.github.cjqcn.tinyredis.core.db.RedisDb;
-import com.github.cjqcn.tinyredis.core.exception.RedisException;
+import com.github.cjqcn.tinyredis.core.exception.ExceptionThrower;
 import com.github.cjqcn.tinyredis.core.struct.impl.StringRedisObject;
 import com.github.cjqcn.tinyredis.core.util.TimeUtil;
 
@@ -23,7 +23,7 @@ public class SetCommand extends AbstractCommand implements RedisCommand {
     @Override
     public void execute() {
         if (expireSec != null && expireSec <= 0) {
-            throw RedisException.INVALID_EXPIRE_TIME_IN_SETEX;
+            ExceptionThrower.INVALID_EXPIRE_TIME.throwException("set");
         }
         RedisDb db = redisClient.curDb();
         db.dict().set(key, StringRedisObject.valueOf(value));

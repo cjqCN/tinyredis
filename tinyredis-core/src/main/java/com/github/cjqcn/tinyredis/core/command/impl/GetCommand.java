@@ -3,7 +3,7 @@ package com.github.cjqcn.tinyredis.core.command.impl;
 import com.github.cjqcn.tinyredis.core.client.RedisClient;
 import com.github.cjqcn.tinyredis.core.command.RedisCommand;
 import com.github.cjqcn.tinyredis.core.db.RedisDb;
-import com.github.cjqcn.tinyredis.core.exception.RedisException;
+import com.github.cjqcn.tinyredis.core.exception.ExceptionThrower;
 import com.github.cjqcn.tinyredis.core.struct.RedisObject;
 import com.github.cjqcn.tinyredis.core.struct.impl.StringRedisObject;
 import com.github.cjqcn.tinyredis.core.util.DBUtil;
@@ -31,13 +31,13 @@ public class GetCommand extends AbstractCommand implements RedisCommand {
         RedisDb db = redisClient.curDb();
         RedisObject value = DBUtil.lookupKeyRead(db, key);
         if (value == null) {
-            redisClient.stream().response(SimpleStringResponse.GET_NULL);
+            redisClient.stream().response(SimpleStringResponse.NULL);
             return;
         }
         if (value instanceof StringRedisObject) {
             redisClient.stream().responseString(value.get().toString());
         } else {
-            throw RedisException.WRONG_TYPE_OPERATION;
+            ExceptionThrower.WRONG_TYPE_OPERATION.throwException();
         }
     }
 

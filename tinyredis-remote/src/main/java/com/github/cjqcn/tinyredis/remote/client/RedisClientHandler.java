@@ -45,11 +45,7 @@ public class RedisClientHandler extends SimpleChannelInboundHandler<ArrayRedisMe
             messages[i] = (FullBulkStringRedisMessage) msg.children().get(i);
         }
         RedisCommand redisCommand = CommandBuilder.decode(redisClient, messages);
-        if (redisCommand != null) {
-            redisClient.executeCommand(redisCommand);
-        } else {
-            redisClient.stream().error("null executeCommand");
-        }
+        redisClient.executeCommand(redisCommand);
     }
 
 

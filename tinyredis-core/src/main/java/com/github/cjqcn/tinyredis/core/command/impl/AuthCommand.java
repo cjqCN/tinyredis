@@ -2,7 +2,7 @@ package com.github.cjqcn.tinyredis.core.command.impl;
 
 import com.github.cjqcn.tinyredis.core.client.RedisClient;
 import com.github.cjqcn.tinyredis.core.command.RedisCommand;
-import com.github.cjqcn.tinyredis.core.exception.RedisException;
+import com.github.cjqcn.tinyredis.core.exception.ExceptionThrower;
 
 public class AuthCommand extends AbstractCommand implements RedisCommand {
     private String password;
@@ -19,7 +19,7 @@ public class AuthCommand extends AbstractCommand implements RedisCommand {
             redisClient.dataAccess().setAuth(true);
             redisClient.stream().responseString("OK");
         } else {
-            throw RedisException.AUTH_ERROR;
+            ExceptionThrower.AUTH_ERROR.throwException();
         }
     }
 
