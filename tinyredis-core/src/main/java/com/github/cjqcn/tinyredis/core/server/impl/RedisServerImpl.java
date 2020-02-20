@@ -2,14 +2,14 @@ package com.github.cjqcn.tinyredis.core.server.impl;
 
 
 import com.github.cjqcn.tinyredis.core.client.RedisClient;
-import com.github.cjqcn.tinyredis.core.db.RedisDb;
-import com.github.cjqcn.tinyredis.core.db.impl.RedisDbImpl;
 import com.github.cjqcn.tinyredis.core.listen.ListenerManager;
 import com.github.cjqcn.tinyredis.core.listen.impl.CommandListener;
 import com.github.cjqcn.tinyredis.core.listen.impl.ListenerManagerImpl;
 import com.github.cjqcn.tinyredis.core.server.Logo;
 import com.github.cjqcn.tinyredis.core.server.RedisInfo;
 import com.github.cjqcn.tinyredis.core.server.RedisServer;
+import com.github.cjqcn.tinyredis.core.struct.RedisDb;
+import com.github.cjqcn.tinyredis.core.struct.impl.RedisDbImpl;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

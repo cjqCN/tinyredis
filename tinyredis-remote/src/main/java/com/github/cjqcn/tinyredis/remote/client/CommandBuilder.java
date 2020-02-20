@@ -13,41 +13,56 @@ import io.netty.util.CharsetUtil;
 public class CommandBuilder {
 
     /**
-     * TODO 参数校验
-     *
      * @param redisClient
      * @param messages
      * @return
      */
     public static final RedisCommand decode(RedisClient redisClient, FullBulkStringRedisMessage[] messages) {
+        if (messages == null || messages.length == 0) {
+            return null;
+        }
+        String[] decodes = new String[messages.length];
+        for (int i = 0; i < messages.length; i++) {
+            decodes[i] = decodeMessageToString(messages[i]);
+        }
+        return decode(redisClient, decodes);
+    }
+
+
+    /**
+     * @param redisClient
+     * @param messages
+     * @return
+     */
+    public static final RedisCommand decode(RedisClient redisClient, String[] messages) {
         String commandTag = "unknown";
         try {
-            commandTag = decodeMessageToString(messages[0]).toLowerCase();
+            commandTag = messages[0].toLowerCase();
             switch (commandTag) {
                 case CommandType.AUTH:
-                    return AuthCommand.build(redisClient, decodeMessageToString(messages[1]));
+                    return AuthCommand.build(redisClient, messages[1]);
                 case CommandType.SELECT:
-                    return SelectDbCommand.build(redisClient, Integer.parseInt(decodeMessageToString(messages[1])));
+                    return SelectDbCommand.build(redisClient, Integer.parseInt(messages[1]));
                 case CommandType.MONITOR:
                     return MonitorCommand.build(redisClient);
                 case CommandType.GET:
-                    return GetCommand.build(redisClient, decodeMessageToString(messages[1]));
+                    return GetCommand.build(redisClient, messages[1]);
                 case CommandType.SET:
                     return tryBuildSetCommand(redisClient, messages);
                 case CommandType.SETNX:
-                    return SetNxCommand.build(redisClient, decodeMessageToString(messages[1]), decodeMessageToString(messages[2]));
+                    return SetNxCommand.build(redisClient, messages[1], messages[2]);
                 case CommandType.SETEX:
-                    return SetExCommand.build(redisClient, decodeMessageToString(messages[1]), decodeMessageToString(messages[3]), Long.parseLong(decodeMessageToString(messages[2])));
+                    return SetExCommand.build(redisClient, messages[1], messages[3], Long.parseLong(messages[2]));
                 case CommandType.PSETEX:
-                    return PSetExCommand.build(redisClient, decodeMessageToString(messages[1]), decodeMessageToString(messages[3]), Long.parseLong(decodeMessageToString(messages[2])));
+                    return PSetExCommand.build(redisClient, messages[1], messages[3], Long.parseLong(messages[2]));
                 case CommandType.DEL:
                     return tryBuildDelCommand(redisClient, messages);
                 case CommandType.EXPIRE:
-                    return ExpireCommand.build(redisClient, decodeMessageToString(messages[1]), Long.parseLong(decodeMessageToString(messages[2])));
+                    return ExpireCommand.build(redisClient, messages[1], Long.parseLong(messages[2]));
                 case CommandType.TTL:
-                    return TTLCommand.build(redisClient, decodeMessageToString(messages[1]));
+                    return TTLCommand.build(redisClient, messages[1]);
                 case CommandType.PTTL:
-                    return PTTLCommand.build(redisClient, decodeMessageToString(messages[1]));
+                    return PTTLCommand.build(redisClient, messages[1]);
                 default:
                     ExceptionThrower.UNKNOWN_COMMAND.throwException();
             }
@@ -61,21 +76,21 @@ public class CommandBuilder {
     }
 
 
-    private static SetCommand tryBuildSetCommand(RedisClient redisClient, FullBulkStringRedisMessage[] messages) {
+    private static SetCommand tryBuildSetCommand(RedisClient redisClient, String[] messages) {
         if (messages.length == 3) {
-            return SetCommand.build(redisClient, decodeMessageToString(messages[1]), decodeMessageToString(messages[2]), null);
+            return SetCommand.build(redisClient, messages[1], messages[2], null);
         }
-        if (messages.length == 5 && "ex".equalsIgnoreCase(decodeMessageToString(messages[3]))) {
-            return SetCommand.build(redisClient, decodeMessageToString(messages[1]), decodeMessageToString(messages[2]), Long.parseLong(decodeMessageToString(messages[4])));
+        if (messages.length == 5 && "ex".equalsIgnoreCase(messages[3])) {
+            return SetCommand.build(redisClient, messages[1], messages[2], Long.parseLong(messages[4]));
         }
         ExceptionThrower.ERROR_PARAM.throwException("set");
         return null;
     }
 
-    private static DelCommand tryBuildDelCommand(RedisClient redisClient, FullBulkStringRedisMessage[] messages) {
+    private static DelCommand tryBuildDelCommand(RedisClient redisClient, String[] messages) {
         String[] keys = new String[messages.length - 1];
         for (int i = 1; i < messages.length; i++) {
-            keys[i - 1] = decodeMessageToString(messages[i]);
+            keys[i - 1] = messages[i];
         }
         return DelCommand.build(redisClient, keys);
     }

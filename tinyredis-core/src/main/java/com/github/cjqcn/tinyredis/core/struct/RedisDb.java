@@ -1,6 +1,4 @@
-package com.github.cjqcn.tinyredis.core.db;
-
-import com.github.cjqcn.tinyredis.core.struct.RedisObject;
+package com.github.cjqcn.tinyredis.core.struct;
 
 public interface RedisDb {
     int id();

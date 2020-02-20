@@ -1,6 +1,6 @@
 package com.github.cjqcn.tinyredis.core.util;
 
-import com.github.cjqcn.tinyredis.core.db.RedisDb;
+import com.github.cjqcn.tinyredis.core.struct.RedisDb;
 import com.github.cjqcn.tinyredis.core.struct.RedisObject;
 
 public final class DBUtil {

@@ -1,9 +1,9 @@
 package com.github.cjqcn.tinyredis.core.client;
 
 import com.github.cjqcn.tinyredis.core.command.RedisCommand;
-import com.github.cjqcn.tinyredis.core.db.RedisDb;
 import com.github.cjqcn.tinyredis.core.listen.Listener;
 import com.github.cjqcn.tinyredis.core.server.RedisServer;
+import com.github.cjqcn.tinyredis.core.struct.RedisDb;
 
 public interface RedisClient {
     String name();

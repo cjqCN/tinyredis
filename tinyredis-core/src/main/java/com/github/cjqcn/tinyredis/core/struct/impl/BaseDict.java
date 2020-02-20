@@ -1,11 +1,13 @@
-package com.github.cjqcn.tinyredis.core.db.impl;
+package com.github.cjqcn.tinyredis.core.struct.impl;
 
-import com.github.cjqcn.tinyredis.core.db.Dict;
+import com.github.cjqcn.tinyredis.core.struct.Dict;
+import com.github.cjqcn.tinyredis.core.struct.ObjectType;
+import com.github.cjqcn.tinyredis.core.struct.RedisObject;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class BaseDict<K, V> implements Dict<K, V> {
+public class BaseDict<K, V> implements Dict<K, V>, RedisObject<Dict<K, V>> {
 
     private Map<K, V> store = new ConcurrentHashMap<>();
 
@@ -32,5 +34,15 @@ public class BaseDict<K, V> implements Dict<K, V> {
     @Override
     public V remove(K key) {
         return store.remove(key);
+    }
+
+    @Override
+    public ObjectType type() {
+        return ObjectType.map;
+    }
+
+    @Override
+    public Dict<K, V> get() {
+        return this;
     }
 }

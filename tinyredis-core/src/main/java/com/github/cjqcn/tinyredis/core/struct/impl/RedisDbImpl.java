@@ -1,7 +1,7 @@
-package com.github.cjqcn.tinyredis.core.db.impl;
+package com.github.cjqcn.tinyredis.core.struct.impl;
 
-import com.github.cjqcn.tinyredis.core.db.Dict;
-import com.github.cjqcn.tinyredis.core.db.RedisDb;
+import com.github.cjqcn.tinyredis.core.struct.Dict;
+import com.github.cjqcn.tinyredis.core.struct.RedisDb;
 
 public class RedisDbImpl implements RedisDb {
     private final int id;

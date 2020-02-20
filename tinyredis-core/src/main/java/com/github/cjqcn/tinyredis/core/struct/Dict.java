@@ -1,4 +1,4 @@
-package com.github.cjqcn.tinyredis.core.db;
+package com.github.cjqcn.tinyredis.core.struct;
 
 public interface Dict<K, V> {
 

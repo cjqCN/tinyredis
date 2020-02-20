@@ -5,10 +5,10 @@ import com.github.cjqcn.tinyredis.core.client.RedisResponseStream;
 import com.github.cjqcn.tinyredis.core.command.RedisCommand;
 import com.github.cjqcn.tinyredis.core.command.RedisResponse;
 import com.github.cjqcn.tinyredis.core.command.impl.AuthCommand;
-import com.github.cjqcn.tinyredis.core.db.RedisDb;
 import com.github.cjqcn.tinyredis.core.exception.ExceptionThrower;
 import com.github.cjqcn.tinyredis.core.listen.Listener;
 import com.github.cjqcn.tinyredis.core.server.RedisServer;
+import com.github.cjqcn.tinyredis.core.struct.RedisDb;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -119,11 +119,11 @@ public class RedisClientImpl implements RedisClient {
 
     @Override
     public void executeCommand(RedisCommand redisCommand) {
-        server().listenerManager().accept(redisCommand);
         if (!(redisCommand instanceof AuthCommand) && !auth) {
             ExceptionThrower.NO_AUTH.throwException();
         }
         redisCommand.execute();
+        server().listenerManager().accept(redisCommand);
     }
 
     @Override
