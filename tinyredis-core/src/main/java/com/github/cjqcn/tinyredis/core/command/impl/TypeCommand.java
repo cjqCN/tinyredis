@@ -15,7 +15,7 @@ public class TypeCommand extends AbstractCommand implements RedisCommand {
     }
 
     @Override
-    public void execute() {
+    public void execute0() {
         execute0(redisClient, key);
     }
 
@@ -27,12 +27,15 @@ public class TypeCommand extends AbstractCommand implements RedisCommand {
     public void execute0(RedisClient redisClient, String key) {
         RedisDb db = redisClient.curDb();
         RedisObject value = DBUtil.lookupKeyRead(db, key);
-
+        if (value == null) {
+            redisClient.stream().responseString("none");
+            return;
+        }
+        redisClient.stream().responseString(value.type().name());
     }
 
     public static TypeCommand build(RedisClient redisClient, String value) {
         return new TypeCommand(redisClient, value);
     }
-
 
 }

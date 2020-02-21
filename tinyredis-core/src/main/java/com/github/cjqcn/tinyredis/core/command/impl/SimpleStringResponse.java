@@ -10,8 +10,12 @@ public class SimpleStringResponse implements RedisResponse {
 
     protected final String content;
 
-    public SimpleStringResponse(String content) {
+    private SimpleStringResponse(String content) {
         this.content = content;
+    }
+
+    public static SimpleStringResponse valueOf(String value) {
+        return new SimpleStringResponse(value);
     }
 
 

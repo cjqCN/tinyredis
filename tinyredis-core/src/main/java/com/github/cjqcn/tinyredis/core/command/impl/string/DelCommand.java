@@ -17,7 +17,7 @@ public class DelCommand extends AbstractCommand implements RedisCommand {
     }
 
     @Override
-    public void execute() {
+    public void execute0() {
         RedisDb redisDb = redisClient.curDb();
         int res = 0;
         for (String key : keys) {

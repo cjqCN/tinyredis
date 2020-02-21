@@ -23,7 +23,7 @@ public class PSetExCommand extends AbstractCommand implements RedisCommand {
     }
 
     @Override
-    public void execute() {
+    public void execute0() {
         if (expireMills <= 0) {
             ExceptionThrower.INVALID_EXPIRE_TIME.throwException("psetex");
         }

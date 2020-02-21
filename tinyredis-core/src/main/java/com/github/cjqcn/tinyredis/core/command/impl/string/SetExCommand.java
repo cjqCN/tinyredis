@@ -23,7 +23,7 @@ public class SetExCommand extends AbstractCommand implements RedisCommand {
     }
 
     @Override
-    public void execute() {
+    public void execute0() {
         if (expireSec <= 0) {
             ExceptionThrower.INVALID_EXPIRE_TIME.throwException("setex");
         }

@@ -2,9 +2,16 @@ package com.github.cjqcn.tinyredis.remote.client;
 
 import com.github.cjqcn.tinyredis.core.client.RedisResponseStream;
 import com.github.cjqcn.tinyredis.core.command.RedisResponse;
+import com.github.cjqcn.tinyredis.core.command.impl.ArrayResponse;
+import com.github.cjqcn.tinyredis.core.command.impl.SimpleStringResponse;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.redis.ArrayRedisMessage;
 import io.netty.handler.codec.redis.ErrorRedisMessage;
+import io.netty.handler.codec.redis.RedisMessage;
 import io.netty.handler.codec.redis.SimpleStringRedisMessage;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class RemoteRedisResponseStream implements RedisResponseStream {
     private final ChannelHandlerContext ctx;
@@ -15,7 +22,14 @@ public class RemoteRedisResponseStream implements RedisResponseStream {
 
     @Override
     public void response(RedisResponse msg) {
-        responseString(msg.decode());
+        if (msg instanceof SimpleStringResponse) {
+            responseString(msg.decode());
+        } else if (msg instanceof ArrayResponse) {
+            List<RedisMessage> redisMessages = Arrays.asList(new SimpleStringRedisMessage("a"), new SimpleStringRedisMessage("b"));
+            ArrayRedisMessage redisMessage = new ArrayRedisMessage(redisMessages);
+            ctx.write(redisMessage);
+            ctx.flush();
+        }
     }
 
     @Override
@@ -23,6 +37,7 @@ public class RemoteRedisResponseStream implements RedisResponseStream {
         ctx.write(new SimpleStringRedisMessage(str));
         ctx.flush();
     }
+
 
     @Override
     public void error(String error) {

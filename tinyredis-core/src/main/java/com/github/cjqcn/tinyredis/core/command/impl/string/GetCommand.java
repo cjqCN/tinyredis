@@ -11,8 +11,7 @@ import com.github.cjqcn.tinyredis.core.struct.impl.StringRedisObject;
 import com.github.cjqcn.tinyredis.core.util.DBUtil;
 
 public class GetCommand extends AbstractCommand implements RedisCommand {
-
-    private final String key;
+    private String key;
 
     public GetCommand(RedisClient redisClient, String key) {
         super(redisClient);
@@ -20,7 +19,7 @@ public class GetCommand extends AbstractCommand implements RedisCommand {
     }
 
     @Override
-    public void execute() {
+    public void execute0() {
         execute0(redisClient, key);
     }
 

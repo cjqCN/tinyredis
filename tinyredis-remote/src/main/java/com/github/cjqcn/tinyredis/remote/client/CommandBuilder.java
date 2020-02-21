@@ -3,7 +3,9 @@ package com.github.cjqcn.tinyredis.remote.client;
 import com.github.cjqcn.tinyredis.core.client.RedisClient;
 import com.github.cjqcn.tinyredis.core.command.CommandType;
 import com.github.cjqcn.tinyredis.core.command.RedisCommand;
-import com.github.cjqcn.tinyredis.core.command.impl.*;
+import com.github.cjqcn.tinyredis.core.command.impl.AuthCommand;
+import com.github.cjqcn.tinyredis.core.command.impl.MonitorCommand;
+import com.github.cjqcn.tinyredis.core.command.impl.SelectDbCommand;
 import com.github.cjqcn.tinyredis.core.command.impl.string.*;
 import com.github.cjqcn.tinyredis.core.exception.ExceptionThrower;
 import com.github.cjqcn.tinyredis.core.exception.RedisException;
@@ -64,6 +66,8 @@ public class CommandBuilder {
                     return TTLCommand.build(redisClient, messages[1]);
                 case CommandType.PTTL:
                     return PTTLCommand.build(redisClient, messages[1]);
+                case CommandType.MGET:
+                    return MGetCommand.build(redisClient, messages);
                 default:
                     ExceptionThrower.UNKNOWN_COMMAND.throwException();
             }

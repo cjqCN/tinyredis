@@ -19,7 +19,7 @@ public class SetNxCommand extends AbstractCommand implements RedisCommand {
     }
 
     @Override
-    public void execute() {
+    public void execute0() {
         RedisDb db = redisClient.curDb();
         RedisObject newValue = StringRedisObject.valueOf(value);
         RedisObject oldValue = db.dict().setnx(key, newValue);

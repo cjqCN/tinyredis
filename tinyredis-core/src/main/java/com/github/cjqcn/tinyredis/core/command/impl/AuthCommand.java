@@ -6,7 +6,7 @@ import com.github.cjqcn.tinyredis.core.exception.ExceptionThrower;
 
 public class AuthCommand extends AbstractCommand implements RedisCommand {
     private String password;
-    private long cost;
+
 
     protected AuthCommand(RedisClient redisClient, String password) {
         super(redisClient);
@@ -14,16 +14,14 @@ public class AuthCommand extends AbstractCommand implements RedisCommand {
     }
 
     @Override
-    public void execute() {
+    public void execute0() {
         boolean auth = redisClient.server().auth(password);
-        long start = System.nanoTime();
         if (auth) {
             redisClient.dataAccess().setAuth(true);
             redisClient.stream().responseString("OK");
         } else {
             ExceptionThrower.AUTH_ERROR.throwException();
         }
-        cost = System.nanoTime() - start;
     }
 
     @Override
