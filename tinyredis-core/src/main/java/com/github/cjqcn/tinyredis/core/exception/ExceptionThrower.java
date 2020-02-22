@@ -6,7 +6,7 @@ public class ExceptionThrower {
 
     public static final ExceptionThrower NO_AUTH = new ExceptionThrower("NOAUTH Authentication required");
 
-    public static final ExceptionThrower UNKNOWN_COMMAND = new ExceptionThrower("ERR unknown command '%d'");
+    public static final ExceptionThrower UNKNOWN_COMMAND = new ExceptionThrower("ERR unknown command '%s'");
 
     public static final ExceptionThrower WRONG_NUM_PARAM = new ExceptionThrower("ERR wrong number of arguments for '%d' command");
 

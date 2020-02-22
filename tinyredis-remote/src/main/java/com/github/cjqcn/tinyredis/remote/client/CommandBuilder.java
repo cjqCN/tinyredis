@@ -69,7 +69,7 @@ public class CommandBuilder {
                 case CommandType.MGET:
                     return MGetCommand.build(redisClient, messages);
                 default:
-                    ExceptionThrower.UNKNOWN_COMMAND.throwException();
+                    ExceptionThrower.UNKNOWN_COMMAND.throwException(commandTag);
             }
         } catch (Exception ex) {
             if (ex instanceof RedisException) {
