@@ -19,4 +19,7 @@ public class CommandType {
     public static final String TTL = "ttl";
     public static final String PTTL = "pttl";
     public static final String EXPIRE = "expire";
+
+    public static final String HSET = "hset";
+    public static final String HGET = "hget";
 }
