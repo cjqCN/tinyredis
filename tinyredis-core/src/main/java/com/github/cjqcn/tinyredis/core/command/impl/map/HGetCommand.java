@@ -42,6 +42,11 @@ public class HGetCommand extends AbstractCommand implements RedisCommand {
         }
     }
 
+
+    public static HGetCommand build(RedisClient redisClient, String key, String field) {
+        return new HGetCommand(redisClient, key, field);
+    }
+
     @Override
     public String decode() {
         return "hget " + key + " " + field;

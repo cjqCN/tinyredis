@@ -6,6 +6,8 @@ import com.github.cjqcn.tinyredis.core.command.RedisCommand;
 import com.github.cjqcn.tinyredis.core.command.impl.AuthCommand;
 import com.github.cjqcn.tinyredis.core.command.impl.MonitorCommand;
 import com.github.cjqcn.tinyredis.core.command.impl.SelectDbCommand;
+import com.github.cjqcn.tinyredis.core.command.impl.map.HGetCommand;
+import com.github.cjqcn.tinyredis.core.command.impl.map.HSetCommand;
 import com.github.cjqcn.tinyredis.core.command.impl.string.*;
 import com.github.cjqcn.tinyredis.core.exception.ExceptionThrower;
 import com.github.cjqcn.tinyredis.core.exception.RedisException;
@@ -68,6 +70,10 @@ public class CommandBuilder {
                     return PTTLCommand.build(redisClient, messages[1]);
                 case CommandType.MGET:
                     return MGetCommand.build(redisClient, messages);
+                case CommandType.HGET:
+                    return HGetCommand.build(redisClient, messages[1], messages[2]);
+                case CommandType.HSET:
+                    return HSetCommand.build(redisClient, messages[1], messages[2], messages[3]);
                 default:
                     ExceptionThrower.UNKNOWN_COMMAND.throwException(commandTag);
             }
