@@ -4,8 +4,10 @@ import com.github.cjqcn.tinyredis.core.command.RedisResponse;
 
 public class SimpleStringResponse implements RedisResponse {
 
-    public static final RedisResponse OK = new SimpleStringResponse("OK");
+    public static final RedisResponse _0 = new SimpleStringResponse("0");
+    public static final RedisResponse _1 = new SimpleStringResponse("1");
 
+    public static final RedisResponse OK = new SimpleStringResponse("OK");
     public static final RedisResponse NULL = new SimpleStringResponse("(nil)");
 
     protected final String content;

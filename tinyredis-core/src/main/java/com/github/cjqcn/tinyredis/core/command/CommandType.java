@@ -22,4 +22,5 @@ public class CommandType {
 
     public static final String HSET = "hset";
     public static final String HGET = "hget";
+    public static final String HDEL = "hdel";
 }
