@@ -20,4 +20,6 @@ public interface RedisServer {
     boolean auth(String password);
 
     ListenerManager listenerManager();
+
+    void setRedisConfig(RedisConfig redisConfig);
 }

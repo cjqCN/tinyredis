@@ -6,6 +6,7 @@ import com.github.cjqcn.tinyredis.core.listen.ListenerManager;
 import com.github.cjqcn.tinyredis.core.listen.impl.CommandListener;
 import com.github.cjqcn.tinyredis.core.listen.impl.ListenerManagerImpl;
 import com.github.cjqcn.tinyredis.core.server.Logo;
+import com.github.cjqcn.tinyredis.core.server.RedisConfig;
 import com.github.cjqcn.tinyredis.core.server.RedisInfo;
 import com.github.cjqcn.tinyredis.core.server.RedisServer;
 import com.github.cjqcn.tinyredis.core.struct.RedisDb;
@@ -73,6 +74,11 @@ public class RedisServerImpl implements RedisServer {
     @Override
     public ListenerManager listenerManager() {
         return listenerManager;
+    }
+
+    @Override
+    public void setRedisConfig(RedisConfig redisConfig) {
+
     }
 
 
