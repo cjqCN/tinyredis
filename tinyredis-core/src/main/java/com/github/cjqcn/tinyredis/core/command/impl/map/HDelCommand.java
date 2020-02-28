@@ -39,6 +39,9 @@ public class HDelCommand extends AbstractCommand implements RedisCommand {
             } else {
                 redisClient.stream().response(SimpleStringResponse._1);
             }
+            if (dict.size() == 0) {
+                db.dict().remove(key);
+            }
         }
     }
 

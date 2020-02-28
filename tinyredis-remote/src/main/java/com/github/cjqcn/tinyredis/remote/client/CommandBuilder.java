@@ -6,6 +6,7 @@ import com.github.cjqcn.tinyredis.core.command.RedisCommand;
 import com.github.cjqcn.tinyredis.core.command.impl.AuthCommand;
 import com.github.cjqcn.tinyredis.core.command.impl.MonitorCommand;
 import com.github.cjqcn.tinyredis.core.command.impl.SelectDbCommand;
+import com.github.cjqcn.tinyredis.core.command.impl.TypeCommand;
 import com.github.cjqcn.tinyredis.core.command.impl.map.HDelCommand;
 import com.github.cjqcn.tinyredis.core.command.impl.map.HGetCommand;
 import com.github.cjqcn.tinyredis.core.command.impl.map.HSetCommand;
@@ -69,6 +70,8 @@ public class CommandBuilder {
                     return TTLCommand.build(redisClient, messages[1]);
                 case CommandType.PTTL:
                     return PTTLCommand.build(redisClient, messages[1]);
+                case CommandType.TYPE:
+                    return TypeCommand.build(redisClient, messages[1]);
                 case CommandType.MGET:
                     return MGetCommand.build(redisClient, messages);
                 case CommandType.HDEL:

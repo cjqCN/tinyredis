@@ -16,10 +16,16 @@
 - setnx
 - setex
 - psetex
+- mget
+
 - expire
 - ttl
 - pttl
+- type
 
+- hset
+- hget
+- hdel
 
 ## 使用
 ### 启动

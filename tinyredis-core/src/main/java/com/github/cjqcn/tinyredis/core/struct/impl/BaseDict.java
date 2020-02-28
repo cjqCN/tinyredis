@@ -37,6 +37,11 @@ public class BaseDict<K, V> implements Dict<K, V>, RedisObject<Dict<K, V>> {
     }
 
     @Override
+    public long size() {
+        return store.size();
+    }
+
+    @Override
     public ObjectType type() {
         return ObjectType.map;
     }

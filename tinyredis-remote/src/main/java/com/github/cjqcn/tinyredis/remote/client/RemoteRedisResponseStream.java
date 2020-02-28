@@ -10,7 +10,7 @@ import io.netty.handler.codec.redis.ErrorRedisMessage;
 import io.netty.handler.codec.redis.RedisMessage;
 import io.netty.handler.codec.redis.SimpleStringRedisMessage;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RemoteRedisResponseStream implements RedisResponseStream {
@@ -25,9 +25,12 @@ public class RemoteRedisResponseStream implements RedisResponseStream {
         if (msg instanceof SimpleStringResponse) {
             responseString(msg.decode());
         } else if (msg instanceof ArrayResponse) {
-            List<RedisMessage> redisMessages = Arrays.asList(new SimpleStringRedisMessage("a"), new SimpleStringRedisMessage("b"));
-            ArrayRedisMessage redisMessage = new ArrayRedisMessage(redisMessages);
-            ctx.write(redisMessage);
+            ArrayResponse tmp = (ArrayResponse) msg;
+            List<RedisMessage> redisMessages = new ArrayList<>(tmp.getRedisResponses().size());
+            for (RedisResponse redisResponse : tmp.getRedisResponses()) {
+                redisMessages.add(new SimpleStringRedisMessage(redisResponse.decode()));
+            }
+            ctx.write(new ArrayRedisMessage(redisMessages));
             ctx.flush();
         }
     }

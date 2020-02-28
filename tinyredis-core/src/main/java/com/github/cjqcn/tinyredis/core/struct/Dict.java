@@ -12,5 +12,7 @@ public interface Dict<K, V> {
 
     V remove(K key);
 
+    long size();
+
 
 }
