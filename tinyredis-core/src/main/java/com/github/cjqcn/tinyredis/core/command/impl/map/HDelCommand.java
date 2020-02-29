@@ -9,6 +9,7 @@ import com.github.cjqcn.tinyredis.core.struct.RedisDb;
 import com.github.cjqcn.tinyredis.core.struct.RedisObject;
 import com.github.cjqcn.tinyredis.core.struct.impl.BaseDict;
 import com.github.cjqcn.tinyredis.core.struct.impl.StringRedisObject;
+import com.github.cjqcn.tinyredis.core.util.DBUtil;
 
 public class HDelCommand extends AbstractCommand implements RedisCommand {
 
@@ -24,7 +25,7 @@ public class HDelCommand extends AbstractCommand implements RedisCommand {
     @Override
     public void execute0() {
         RedisDb db = redisClient.curDb();
-        RedisObject hMap = db.dict().get(key);
+        RedisObject hMap = DBUtil.lookupKeyRead(db, key);
         if (hMap == null) {
             redisClient.stream().response(SimpleStringResponse._0);
             return;

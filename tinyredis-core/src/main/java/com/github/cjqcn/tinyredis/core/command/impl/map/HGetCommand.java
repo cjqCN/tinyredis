@@ -9,6 +9,7 @@ import com.github.cjqcn.tinyredis.core.struct.RedisDb;
 import com.github.cjqcn.tinyredis.core.struct.RedisObject;
 import com.github.cjqcn.tinyredis.core.struct.impl.BaseDict;
 import com.github.cjqcn.tinyredis.core.struct.impl.StringRedisObject;
+import com.github.cjqcn.tinyredis.core.util.DBUtil;
 
 public class HGetCommand extends AbstractCommand implements RedisCommand {
 
@@ -24,21 +25,20 @@ public class HGetCommand extends AbstractCommand implements RedisCommand {
     @Override
     public void execute0() {
         RedisDb db = redisClient.curDb();
-        RedisObject hMap = db.dict().get(key);
+        RedisObject hMap = DBUtil.lookupKeyRead(db, key);
         if (hMap == null) {
             redisClient.stream().response(SimpleStringResponse.NULL);
             return;
         }
         if (!(hMap instanceof BaseDict)) {
             ExceptionThrower.WRONG_TYPE_OPERATION.throwException();
+        }
+        BaseDict<String, StringRedisObject> dict = (BaseDict) hMap;
+        StringRedisObject value = dict.get(field);
+        if (value == null) {
+            redisClient.stream().response(SimpleStringResponse.NULL);
         } else {
-            BaseDict<String, StringRedisObject> dict = (BaseDict) hMap;
-            StringRedisObject value = dict.get(field);
-            if (value == null) {
-                redisClient.stream().response(SimpleStringResponse.NULL);
-            } else {
-                redisClient.stream().responseString(value.get());
-            }
+            redisClient.stream().responseString(value.get());
         }
     }
 

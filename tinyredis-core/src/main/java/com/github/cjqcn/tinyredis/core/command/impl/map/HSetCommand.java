@@ -9,6 +9,7 @@ import com.github.cjqcn.tinyredis.core.struct.RedisDb;
 import com.github.cjqcn.tinyredis.core.struct.RedisObject;
 import com.github.cjqcn.tinyredis.core.struct.impl.BaseDict;
 import com.github.cjqcn.tinyredis.core.struct.impl.StringRedisObject;
+import com.github.cjqcn.tinyredis.core.util.DBUtil;
 
 public class HSetCommand extends AbstractCommand implements RedisCommand {
 
@@ -32,20 +33,20 @@ public class HSetCommand extends AbstractCommand implements RedisCommand {
     }
 
     private BaseDict<String, StringRedisObject> getAndInitHMap(RedisDb db, String key) {
-        RedisObject redisObject = db.dict().get(key);
-        if (redisObject == null) {
+        RedisObject hMap = DBUtil.lookupKeyRead(db, key);
+        if (hMap == null) {
             synchronized (db) {
-                redisObject = db.dict().get(key);
-                if (redisObject == null) {
-                    redisObject = new BaseDict();
-                    db.dict().set(key, redisObject);
+                hMap = db.dict().get(key);
+                if (hMap == null) {
+                    hMap = new BaseDict();
+                    db.dict().set(key, hMap);
                 }
             }
         }
-        if (!(redisObject instanceof BaseDict)) {
+        if (!(hMap instanceof BaseDict)) {
             ExceptionThrower.WRONG_TYPE_OPERATION.throwException();
         }
-        return (BaseDict<String, StringRedisObject>) redisObject;
+        return (BaseDict<String, StringRedisObject>) hMap;
     }
 
 

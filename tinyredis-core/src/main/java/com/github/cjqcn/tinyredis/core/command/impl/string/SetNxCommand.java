@@ -6,6 +6,7 @@ import com.github.cjqcn.tinyredis.core.command.impl.AbstractCommand;
 import com.github.cjqcn.tinyredis.core.struct.RedisDb;
 import com.github.cjqcn.tinyredis.core.struct.RedisObject;
 import com.github.cjqcn.tinyredis.core.struct.impl.StringRedisObject;
+import com.github.cjqcn.tinyredis.core.util.DBUtil;
 
 public class SetNxCommand extends AbstractCommand implements RedisCommand {
 
@@ -21,9 +22,9 @@ public class SetNxCommand extends AbstractCommand implements RedisCommand {
     @Override
     public void execute0() {
         RedisDb db = redisClient.curDb();
-        RedisObject newValue = StringRedisObject.valueOf(value);
-        RedisObject oldValue = db.dict().setnx(key, newValue);
+        RedisObject oldValue = DBUtil.lookupKeyRead(db, key);
         if (oldValue == null) {
+            db.dict().setnx(key, StringRedisObject.valueOf(value));
             redisClient.stream().responseString("1");
         } else {
             redisClient.stream().responseString("0");

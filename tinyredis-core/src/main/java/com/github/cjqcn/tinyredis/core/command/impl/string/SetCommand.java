@@ -38,7 +38,7 @@ public class SetCommand extends AbstractCommand implements RedisCommand {
     @Override
     public String decode() {
         if (expireSec != null) {
-            return String.format("set %s %s %d", key, value, expireSec);
+            return String.format("set %s %s ex %d", key, value, expireSec);
         }
         return String.format("set %s %s", key, value);
     }
