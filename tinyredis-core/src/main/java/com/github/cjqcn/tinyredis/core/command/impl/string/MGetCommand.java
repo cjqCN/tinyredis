@@ -47,8 +47,8 @@ public class MGetCommand extends AbstractCommand implements RedisCommand {
     @Override
     public String decode() {
         StringBuffer sb = new StringBuffer("mget");
-        for (int i = 0; i < keys.length; i++) {
-            sb.append(" ").append(keys);
+        for (int i = 1; i < keys.length; i++) {
+            sb.append(" ").append(keys[i]);
         }
         return sb.toString();
     }
