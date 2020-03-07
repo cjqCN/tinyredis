@@ -7,6 +7,8 @@ import com.github.cjqcn.tinyredis.core.command.impl.AbstractCommand;
 public class MSetCommand extends AbstractCommand implements RedisCommand {
 
 
+    private String[] params;
+
     protected MSetCommand(RedisClient redisClient) {
         super(redisClient);
     }
