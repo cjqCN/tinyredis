@@ -2,8 +2,7 @@ package com.github.cjqcn.tinyredis.core.server;
 
 public interface Logo {
 
-
-    String ascii_logo =
+    String ASCII_LOGO =
             "                 _._                                                  \n" +
                     "           _.-'' __ ''-._                                             \n" +
                     "      _.-''    '.  '_.  ''-._             Redis %s (%s/%d) %s bit\n" +

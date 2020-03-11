@@ -59,6 +59,8 @@ public class CommandBuilder {
                     return SetExCommand.build(redisClient, messages[1], messages[3], Long.parseLong(messages[2]));
                 case CommandType.PSETEX:
                     return PSetExCommand.build(redisClient, messages[1], messages[3], Long.parseLong(messages[2]));
+                case CommandType.STR_LEN:
+                    return StrLenCommand.build(redisClient, messages[1]);
                 case CommandType.DEL:
                     return tryBuildDelCommand(redisClient, messages);
                 case CommandType.EXPIRE:

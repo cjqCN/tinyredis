@@ -48,7 +48,7 @@ public class RedisServerImpl implements RedisServer {
 
     @Override
     public void init() {
-        System.out.println(Logo.ascii_logo);
+        System.out.println(Logo.ASCII_LOGO);
         for (int i = 0; i < dbs.length; i++) {
             dbs[i] = new RedisDbImpl(i);
         }

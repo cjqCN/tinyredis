@@ -15,6 +15,11 @@ public class LocalResponseStream implements RedisResponseStream {
     }
 
     @Override
+    public void response(Object object) {
+        System.out.println(object);
+    }
+
+    @Override
     public void error(String error) {
         System.err.println(error);
     }

@@ -15,6 +15,7 @@ public class CommandType {
     public static final String PSETEX = "psetex";
     public static final String MGET = "mget";
     public static final String MSET = "mset";
+    public static final String STR_LEN = "strlen";
 
     public static final String TTL = "ttl";
     public static final String PTTL = "pttl";

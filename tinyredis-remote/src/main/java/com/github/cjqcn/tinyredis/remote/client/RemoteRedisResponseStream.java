@@ -41,6 +41,11 @@ public class RemoteRedisResponseStream implements RedisResponseStream {
         ctx.flush();
     }
 
+    @Override
+    public void response(Object object) {
+        responseString(object.toString());
+    }
+
 
     @Override
     public void error(String error) {

@@ -8,5 +8,7 @@ public interface RedisResponseStream {
 
     void responseString(String str);
 
+    void response(Object object);
+
     void error(String error);
 }
