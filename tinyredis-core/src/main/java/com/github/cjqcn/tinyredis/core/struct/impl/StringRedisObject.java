@@ -11,10 +11,18 @@ public class StringRedisObject implements RedisObject<String> {
         return new StringRedisObject(content);
     }
 
+    public static final StringRedisObject valueOf(Number number) {
+        return new StringRedisObject(number);
+    }
+
     private final String content;
 
     public StringRedisObject(String content) {
         this.content = content;
+    }
+
+    public StringRedisObject(Number number) {
+        this.content = number.toString();
     }
 
     public String content() {

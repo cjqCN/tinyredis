@@ -1,0 +1,52 @@
+package com.github.cjqcn.tinyredis.core.command.impl.string;
+
+import com.github.cjqcn.tinyredis.core.client.RedisClient;
+import com.github.cjqcn.tinyredis.core.command.RedisCommand;
+import com.github.cjqcn.tinyredis.core.command.impl.AbstractCommand;
+import com.github.cjqcn.tinyredis.core.struct.RedisDb;
+import com.github.cjqcn.tinyredis.core.struct.impl.StringRedisObject;
+import com.github.cjqcn.tinyredis.core.util.DBUtil;
+
+import static com.github.cjqcn.tinyredis.core.exception.ExceptionThrower.NOT_INTEGER_OR_OUT_OF_RANGE;
+
+public class DecrCommand extends AbstractCommand implements RedisCommand {
+
+    private String key;
+
+    protected DecrCommand(RedisClient redisClient, String key) {
+        super(redisClient);
+        this.key = key;
+    }
+
+    @Override
+    protected void execute0() {
+        RedisDb db = redisClient.curDb();
+        StringRedisObject value = DBUtil.lookupKeyStringRead(db, key);
+        if (value == null) {
+            db.dict().set(key, StringRedisObject.valueOf(-1));
+            redisClient.stream().response(-1);
+            return;
+        }
+        String content = value.content();
+        long res = 0;
+        try {
+            res = Long.parseLong(content);
+        } catch (NumberFormatException ex) {
+            NOT_INTEGER_OR_OUT_OF_RANGE.throwException();
+        }
+        if (res == Long.MIN_VALUE) {
+            NOT_INTEGER_OR_OUT_OF_RANGE.throwException();
+        }
+        db.dict().set(key, StringRedisObject.valueOf(--res));
+        redisClient.stream().response(res);
+    }
+
+    @Override
+    public String decode() {
+        return "decr " + key;
+    }
+
+    public static DecrCommand build(RedisClient redisClient, String key) {
+        return new DecrCommand(redisClient, key);
+    }
+}

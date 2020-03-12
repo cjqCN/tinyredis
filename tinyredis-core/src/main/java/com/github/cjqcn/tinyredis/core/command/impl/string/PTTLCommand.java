@@ -30,12 +30,12 @@ public class PTTLCommand extends AbstractCommand implements RedisCommand {
         RedisDb db = redisClient.curDb();
         RedisObject value = DBUtil.lookupKeyRead(db, key);
         if (value == null) {
-            redisClient.stream().responseString("-2");
+            redisClient.stream().response(-2);
             return;
         }
         Long expireTimestamp = db.expires().get(key);
         if (expireTimestamp == null) {
-            redisClient.stream().responseString("-1");
+            redisClient.stream().response(-1);
         } else {
             redisClient.stream().responseString(String.valueOf((expireTimestamp - TimeUtil.currentTimeMillis())));
         }

@@ -16,6 +16,8 @@ public class ExceptionThrower {
 
     public static final ExceptionThrower INVALID_EXPIRE_TIME = new ExceptionThrower("ERR invalid expire time in %s");
 
+    public static final ExceptionThrower NOT_INTEGER_OR_OUT_OF_RANGE = new ExceptionThrower("ERR value is not an integer or out of range");
+
     private final String format;
 
     public ExceptionThrower(String format) {
