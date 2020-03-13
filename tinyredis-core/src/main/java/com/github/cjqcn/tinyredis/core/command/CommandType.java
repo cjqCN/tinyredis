@@ -16,6 +16,8 @@ public class CommandType {
     public static final String MGET = "mget";
     public static final String MSET = "mset";
     public static final String STR_LEN = "strlen";
+    public static final String INCR = "incr";
+    public static final String DECR = "decr";
 
     public static final String TTL = "ttl";
     public static final String PTTL = "pttl";
