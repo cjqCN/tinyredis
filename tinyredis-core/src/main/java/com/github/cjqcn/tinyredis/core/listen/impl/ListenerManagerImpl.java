@@ -36,6 +36,11 @@ public final class ListenerManagerImpl implements ListenerManager {
     }
 
     @Override
+    public void removeAll() {
+        listeners.clear();
+    }
+
+    @Override
     public void accept(Object event) {
         executor.execute(() -> {
             accept0(event);

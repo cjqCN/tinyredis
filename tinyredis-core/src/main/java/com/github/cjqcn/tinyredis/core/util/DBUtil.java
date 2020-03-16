@@ -3,7 +3,7 @@ package com.github.cjqcn.tinyredis.core.util;
 import com.github.cjqcn.tinyredis.core.exception.ExceptionThrower;
 import com.github.cjqcn.tinyredis.core.struct.RedisDb;
 import com.github.cjqcn.tinyredis.core.struct.RedisObject;
-import com.github.cjqcn.tinyredis.core.struct.impl.StringRedisObject;
+import com.github.cjqcn.tinyredis.core.struct.impl.Sds;
 
 public final class DBUtil {
     private DBUtil() {
@@ -17,7 +17,7 @@ public final class DBUtil {
     }
 
 
-    public static StringRedisObject lookupKeyStringRead(RedisDb db, String key) {
+    public static Sds lookupKeyStringRead(RedisDb db, String key) {
         if (expireIfNeeded(db, key)) {
             return null;
         }
@@ -25,10 +25,10 @@ public final class DBUtil {
         if (object == null) {
             return null;
         }
-        if (!(object instanceof StringRedisObject)) {
+        if (!(object instanceof Sds)) {
             ExceptionThrower.WRONG_TYPE_OPERATION.throwException();
         }
-        return (StringRedisObject) object;
+        return (Sds) object;
     }
 
     public static RedisObject delKey(RedisDb db, String key) {

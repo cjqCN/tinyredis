@@ -8,7 +8,7 @@ import com.github.cjqcn.tinyredis.core.exception.ExceptionThrower;
 import com.github.cjqcn.tinyredis.core.struct.RedisDb;
 import com.github.cjqcn.tinyredis.core.struct.RedisObject;
 import com.github.cjqcn.tinyredis.core.struct.impl.BaseDict;
-import com.github.cjqcn.tinyredis.core.struct.impl.StringRedisObject;
+import com.github.cjqcn.tinyredis.core.struct.impl.Sds;
 import com.github.cjqcn.tinyredis.core.util.DBUtil;
 
 public class HSetCommand extends AbstractCommand implements RedisCommand {
@@ -27,12 +27,12 @@ public class HSetCommand extends AbstractCommand implements RedisCommand {
     @Override
     public void execute0() {
         RedisDb db = redisClient.curDb();
-        BaseDict<String, StringRedisObject> baseDict = getAndInitHMap(db, key);
-        baseDict.set(field, StringRedisObject.valueOf(value));
+        BaseDict<String, Sds> baseDict = getAndInitHMap(db, key);
+        baseDict.set(field, Sds.valueOf(value));
         redisClient.stream().response(SimpleStringResponse.OK);
     }
 
-    private BaseDict<String, StringRedisObject> getAndInitHMap(RedisDb db, String key) {
+    private BaseDict<String, Sds> getAndInitHMap(RedisDb db, String key) {
         RedisObject hMap = DBUtil.lookupKeyRead(db, key);
         if (hMap == null) {
             synchronized (db) {
@@ -46,7 +46,7 @@ public class HSetCommand extends AbstractCommand implements RedisCommand {
         if (!(hMap instanceof BaseDict)) {
             ExceptionThrower.WRONG_TYPE_OPERATION.throwException();
         }
-        return (BaseDict<String, StringRedisObject>) hMap;
+        return (BaseDict<String, Sds>) hMap;
     }
 
 

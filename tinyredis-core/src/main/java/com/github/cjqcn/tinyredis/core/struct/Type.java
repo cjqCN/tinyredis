@@ -1,6 +1,6 @@
 package com.github.cjqcn.tinyredis.core.struct;
 
-public enum ObjectType {
+public enum Type {
     string,
     map
 }

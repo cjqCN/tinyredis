@@ -7,7 +7,7 @@ import com.github.cjqcn.tinyredis.core.command.impl.SimpleStringResponse;
 import com.github.cjqcn.tinyredis.core.exception.ExceptionThrower;
 import com.github.cjqcn.tinyredis.core.struct.RedisDb;
 import com.github.cjqcn.tinyredis.core.struct.RedisObject;
-import com.github.cjqcn.tinyredis.core.struct.impl.StringRedisObject;
+import com.github.cjqcn.tinyredis.core.struct.impl.Sds;
 import com.github.cjqcn.tinyredis.core.util.DBUtil;
 
 public class GetCommand extends AbstractCommand implements RedisCommand {
@@ -35,7 +35,7 @@ public class GetCommand extends AbstractCommand implements RedisCommand {
             redisClient.stream().response(SimpleStringResponse.NULL);
             return;
         }
-        if (value instanceof StringRedisObject) {
+        if (value instanceof Sds) {
             redisClient.stream().responseString(value.get().toString());
         } else {
             ExceptionThrower.WRONG_TYPE_OPERATION.throwException();

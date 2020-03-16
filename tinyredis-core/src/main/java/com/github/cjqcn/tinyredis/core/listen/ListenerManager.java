@@ -6,4 +6,6 @@ public interface ListenerManager extends Listener {
 
     void remove(Listener listener);
 
+    void removeAll();
+
 }

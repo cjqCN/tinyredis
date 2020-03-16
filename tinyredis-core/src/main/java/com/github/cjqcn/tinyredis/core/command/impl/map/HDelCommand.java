@@ -8,7 +8,7 @@ import com.github.cjqcn.tinyredis.core.exception.ExceptionThrower;
 import com.github.cjqcn.tinyredis.core.struct.RedisDb;
 import com.github.cjqcn.tinyredis.core.struct.RedisObject;
 import com.github.cjqcn.tinyredis.core.struct.impl.BaseDict;
-import com.github.cjqcn.tinyredis.core.struct.impl.StringRedisObject;
+import com.github.cjqcn.tinyredis.core.struct.impl.Sds;
 import com.github.cjqcn.tinyredis.core.util.DBUtil;
 
 public class HDelCommand extends AbstractCommand implements RedisCommand {
@@ -33,8 +33,8 @@ public class HDelCommand extends AbstractCommand implements RedisCommand {
         if (!(hMap instanceof BaseDict)) {
             ExceptionThrower.WRONG_TYPE_OPERATION.throwException();
         } else {
-            BaseDict<String, StringRedisObject> dict = (BaseDict) hMap;
-            StringRedisObject value = dict.remove(field);
+            BaseDict<String, Sds> dict = (BaseDict) hMap;
+            Sds value = dict.remove(field);
             if (value == null) {
                 redisClient.stream().response(SimpleStringResponse._0);
             } else {

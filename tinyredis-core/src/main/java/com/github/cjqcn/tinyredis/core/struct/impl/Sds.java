@@ -1,27 +1,27 @@
 package com.github.cjqcn.tinyredis.core.struct.impl;
 
-import com.github.cjqcn.tinyredis.core.struct.ObjectType;
+import com.github.cjqcn.tinyredis.core.struct.Type;
 import com.github.cjqcn.tinyredis.core.struct.RedisObject;
 
 import java.util.Objects;
 
-public class StringRedisObject implements RedisObject<String> {
+public class Sds implements RedisObject<String> {
 
-    public static final StringRedisObject valueOf(String content) {
-        return new StringRedisObject(content);
+    public static final Sds valueOf(String content) {
+        return new Sds(content);
     }
 
-    public static final StringRedisObject valueOf(Number number) {
-        return new StringRedisObject(number);
+    public static final Sds valueOf(Number number) {
+        return new Sds(number);
     }
 
     private final String content;
 
-    public StringRedisObject(String content) {
+    public Sds(String content) {
         this.content = content;
     }
 
-    public StringRedisObject(Number number) {
+    public Sds(Number number) {
         this.content = number.toString();
     }
 
@@ -30,8 +30,8 @@ public class StringRedisObject implements RedisObject<String> {
     }
 
     @Override
-    public ObjectType type() {
-        return ObjectType.string;
+    public Type type() {
+        return Type.string;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class StringRedisObject implements RedisObject<String> {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        StringRedisObject that = (StringRedisObject) o;
+        Sds that = (Sds) o;
         return content.equals(that.content);
     }
 

@@ -1,60 +1,19 @@
 package com.github.cjqcn.tinyredis.core.server;
 
-public final class RedisConfig {
+public interface RedisConfig {
+    RedisConfig setHost(String host);
 
-    private static final String DEFAULT_HOST = "localhost";
-    private static final int DEFAULT_PORT = 6379;
-    private static final int DEFAULT_DB_NUM = 16;
-    private static final String DEFAULT_PASSWORD = "root";
+    RedisConfig setPort(int port);
 
-    private String host = DEFAULT_HOST;
-    private int port = DEFAULT_PORT;
-    private int dbNum = DEFAULT_DB_NUM;
-    private String password = DEFAULT_PASSWORD;
+    RedisConfig setDbNum(int dbNum);
 
-    public String getHost() {
-        return host;
-    }
+    RedisConfig setPassword(String password);
 
-    public RedisConfig setHost(String host) {
-        this.host = host;
-        return this;
-    }
+    String getHost();
 
-    public int getPort() {
-        return port;
-    }
+    int getPort();
 
-    public RedisConfig setPort(int port) {
-        this.port = port;
-        return this;
-    }
+    int getDbNum();
 
-    public int getDbNum() {
-        return dbNum;
-    }
-
-    public RedisConfig setDbNum(int dbNum) {
-        this.dbNum = dbNum;
-        return this;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public RedisConfig setPassword(String password) {
-        this.password = password;
-        return this;
-    }
-
-    @Override
-    public String toString() {
-        return "RedisConfig{" +
-                "host='" + host + '\'' +
-                ", port=" + port +
-                ", dbNum=" + dbNum +
-                ", password='" + password + '\'' +
-                '}';
-    }
+    String getPassword();
 }

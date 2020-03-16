@@ -1,7 +1,7 @@
 package com.github.cjqcn.tinyredis.core.struct.impl;
 
 import com.github.cjqcn.tinyredis.core.struct.Dict;
-import com.github.cjqcn.tinyredis.core.struct.ObjectType;
+import com.github.cjqcn.tinyredis.core.struct.Type;
 import com.github.cjqcn.tinyredis.core.struct.RedisObject;
 
 import java.util.Map;
@@ -42,8 +42,8 @@ public class BaseDict<K, V> implements Dict<K, V>, RedisObject<Dict<K, V>> {
     }
 
     @Override
-    public ObjectType type() {
-        return ObjectType.map;
+    public Type type() {
+        return Type.map;
     }
 
     @Override
