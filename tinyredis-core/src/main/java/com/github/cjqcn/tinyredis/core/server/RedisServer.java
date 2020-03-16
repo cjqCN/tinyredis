@@ -15,11 +15,11 @@ public interface RedisServer {
 
     void destroy();
 
-    RedisDb[] dbs();
+    RedisDb db(int index);
 
     boolean auth(String password);
 
     ListenerManager listenerManager();
 
-    void setRedisConfig(RedisConfig redisConfig);
+    RedisConfig redisConfig();
 }

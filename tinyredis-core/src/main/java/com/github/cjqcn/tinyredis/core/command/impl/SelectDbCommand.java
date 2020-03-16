@@ -16,7 +16,7 @@ public class SelectDbCommand extends AbstractCommand implements RedisCommand {
     @Override
     public void execute0() {
         RedisServer redisServer = redisClient.server();
-        redisClient.dataAccess().setCurDb(redisServer.dbs()[dbIndex]);
+        redisClient.dataAccess().setCurDb(redisServer.db(dbIndex));
         redisClient.stream().response(SimpleStringResponse.OK);
     }
 

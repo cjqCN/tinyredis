@@ -7,7 +7,6 @@ import com.github.cjqcn.tinyredis.core.exception.ExceptionThrower;
 public class AuthCommand extends AbstractCommand implements RedisCommand {
     private String password;
 
-
     protected AuthCommand(RedisClient redisClient, String password) {
         super(redisClient);
         this.password = password;

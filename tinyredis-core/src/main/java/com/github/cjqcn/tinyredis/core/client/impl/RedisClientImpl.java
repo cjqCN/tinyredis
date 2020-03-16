@@ -45,10 +45,6 @@ public class RedisClientImpl implements RedisClient {
 
     @Override
     public DataAccess dataAccess() {
-//        Class callerClass = Reflection.getCallerClass();
-//        if (!callerClass.isAssignableFrom(RedisServer.class) || callerClass.isAssignableFrom(RedisCommand.class)) {
-//            throw new UnsupportedOperationException();
-//        }
         final RedisClientImpl redisClient = this;
         return new DataAccess() {
             @Override

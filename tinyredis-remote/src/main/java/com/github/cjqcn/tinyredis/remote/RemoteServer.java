@@ -26,16 +26,15 @@ import java.net.InetSocketAddress;
 public final class RemoteServer {
 
     private static final boolean SSL = System.getProperty("ssl") != null;
-    private static final String HOST = System.getProperty("host", "localhost");
-    private static final int PORT = Integer.parseInt(System.getProperty("port", "6379"));
     private static final Logger logger = LoggerFactory.getLogger(RemoteServer.class);
 
     public static void main(String[] args) throws Exception {
         long start = System.currentTimeMillis();
         final RedisServer server = new RedisServerImpl();
         server.init();
-
-        InetSocketAddress bindAddress = new InetSocketAddress(HOST, PORT);
+        String host = server.redisConfig().getHost();
+        int port = server.redisConfig().getPort();
+        InetSocketAddress bindAddress = new InetSocketAddress(host, port);
 
         // Configure SSL.
         final SslContext sslCtx;
